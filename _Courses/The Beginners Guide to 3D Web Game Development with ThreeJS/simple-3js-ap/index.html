@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simple 3JS App</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module">
+        import { App } from './app.js';
+        document.addEventListener("DOMContentLoaded", function () {
+            const app = new App();
+            window.app = app;
+        });
+    </script>
+</body>
+
+</html>
