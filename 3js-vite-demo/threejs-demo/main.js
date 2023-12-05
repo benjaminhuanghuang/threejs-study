@@ -10,20 +10,21 @@ const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
 // Light
-const light = new THREE.PointLight(0xffffff, 1, 100);
+const light = new THREE.PointLight(0xffffff, 100);
 light.position.set(0, 10, 10);
 scene.add(light);
 
+// Ambient light to illuminate all objects in the scene
+const ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
+
 // Camera
 const camera = new THREE.PerspectiveCamera(45, 800 / 600);
-// camera.position.set(0, 0, 10);
 camera.position.z = 20;
 scene.add(camera);
 
 // Renderer
 const canvas = document.querySelector(".webgl");
-const render = new THREE.WebGLRenderer({ canvas });
-render.setSize(800, 600);
-render.render(scene, camera);
-
-//
+const renderer = new THREE.WebGLRenderer({ canvas });
+renderer.setSize(800, 600);
+renderer.render(scene, camera);
