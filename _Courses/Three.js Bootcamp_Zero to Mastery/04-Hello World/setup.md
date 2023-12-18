@@ -19,6 +19,3 @@ Setup
 ```bash
 npm install three
 ```
-
-```html
-```
