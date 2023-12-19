@@ -17,6 +17,19 @@ scene.add(camera);
 // init renderer
 const canvas = document.querySelector('.threejs');
 const renderer = new THREE.WebGLRenderer({ canvas });
-
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.render(scene, camera);
+
+// init the control
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.BoxGeometry
+controls.autoRotate = true;
+
+//renderer.render(scene, camera);
+
+const renderLoop = () => {
+    controls.update();
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(renderLoop);
+}
+
+renderLoop();

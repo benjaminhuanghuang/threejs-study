@@ -15,3 +15,13 @@ function animate() {
 
 animate();
 ```
+
+```js
+
+const renderLoop = () => {
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(renderLoop);
+}
+
+renderLoop();
+```
