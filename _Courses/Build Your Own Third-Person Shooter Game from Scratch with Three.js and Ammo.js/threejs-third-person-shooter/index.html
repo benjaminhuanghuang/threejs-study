@@ -5,17 +5,14 @@
 	<title>Three.js - 3rd Person Shooter</title>
 	<link type="text/css" rel="stylesheet" href="style.css">
 	<script type="importmap">
-		{
-			"imports": {
-				"three": "https://unpkg.com/three@0. 150.1/build/three-module.js"
-				"three/addons/": "https://unpkg.com/three@0. 150.1/examples/jsm/"
-				}
-		}
-    </script>
-	<script src="js/ammo.wasm.js"></script>
-	<script type="module" defer src="script.js"></script>
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@v0.150.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@v0.150.1/examples/jsm/"
+          }
+        }
+      </script>
 </head>
-
 <body>
 	<div id="blocker">
 		<div id="instructions">
@@ -35,6 +32,8 @@
 		<div id="stopwatch">0</div>
 		<div id="ball-remaining">Remaining Balls: <span>00</span></div>
 	</div>
+	<script src="js/ammo.js"></script>
+	<script type="module" defer src="script.js"></script>
 </body>
 
 </html>
