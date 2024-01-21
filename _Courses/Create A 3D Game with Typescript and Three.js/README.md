@@ -43,10 +43,23 @@ Add _collider into GameEntities.ts
 
 ## 6. Add bullets
 
-
-## 7. Add explosion and shooing effect
+## 7. Shooting effect
 
 Add utils\MathUtil.ts
 
+Update playerTank.ts
 
-## 8. Add collision detection
+## 8. Explosion effect
+
+Add effect\Explosion.ts
+Update Bullets.ts
+
+## 9. Add enemy tanks
+
+Update ResourceManager.ts
+
+Add EnemyTank.ts
+
+Update GameScene.ts
+
+Add collision between enemy tanks and bullets

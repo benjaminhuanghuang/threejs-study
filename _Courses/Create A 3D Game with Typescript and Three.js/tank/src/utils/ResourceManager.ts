@@ -1,5 +1,5 @@
 import { Texture, TextureLoader } from "three";
-import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 class ResourceManager {
   private static _instance = new ResourceManager();
@@ -51,6 +51,19 @@ class ResourceManager {
     // add to the game resources
     this._textures.set("tank-body", tankBodyTexture);
     this._textures.set("tank-turret", tankTurretTexture);
+
+    // load enemy textures
+    // enemy tank
+    const tankBodyTextureRed = await textureLoader.loadAsync(
+      "textures/tank-body-red.png"
+    );
+    const tankTurretTextureRed = await textureLoader.loadAsync(
+      "textures/tank-turret-red.png"
+    );
+
+    // add to the game resources
+    this._textures.set("tank-body-red", tankBodyTextureRed);
+    this._textures.set("tank-turret-red", tankTurretTextureRed);
 
     // wall texture
     const wallTexture = await textureLoader.loadAsync("textures/wall.png");

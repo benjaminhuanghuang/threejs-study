@@ -1,7 +1,7 @@
 import { Box3, Mesh, Sphere, Vector3 } from "three";
 
 // discriminator for the type of entity
-type EntityType = "general" | "player" | "bullet";
+type EntityType = "general" | "player" | "bullet" | "enemy";
 
 abstract class GameEntity {
   protected _position: Vector3;
