@@ -43,7 +43,18 @@ export default class SceneTest extends THREE.Scene {
     light.position.set(0, 4, 2);
 
     this.add(light);
+
+    // Create the gun
+    this.gun = await this.createGun()
+		this.add(this.gun)
+
+    this.gun.position.z = 3
+		this.gun.add(this.camera)
+
+		this.camera.position.z = 1
+		this.camera.position.y = 0.5
   }
+  
 
   async createTarget(mtl) {
     this.objLoader.setMaterials(mtl);
@@ -54,4 +65,16 @@ export default class SceneTest extends THREE.Scene {
 
     return modelRoot;
   }
+
+  async createGun()
+	{
+		const mtl = await this.mtlLoader.loadAsync('assets/blasterG.mtl')
+		mtl.preload()
+
+		this.objLoader.setMaterials(mtl)
+
+		const modelRoot = await this.objLoader.loadAsync('assets/blasterG.obj')
+
+		return modelRoot
+	}
 }
