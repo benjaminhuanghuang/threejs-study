@@ -24,7 +24,7 @@ class GameScene {
     this._renderer.setSize(this._width, this._height);
 
     // find the target html element
-    const targetElement = document.querySelector < HTMLDivElement > "#app";
+    const targetElement = document.querySelector("#app");
     if (!targetElement) {
       throw "unable to find target element";
     }
