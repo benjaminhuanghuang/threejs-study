@@ -1,8 +1,10 @@
 # Three.js Bootcamp: Zero to Mastery
+
 https://zerotomastery.io/courses/learn-three-js/
 https://www.bilibili.com/video/BV1nj411h7QG/
 
 ## Table of Contents
+
 - Introduction
 - Getting Started
 - Three.js Fundamentals

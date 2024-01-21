@@ -1,5 +1,7 @@
 # Learn Three.js - Fourth Edition
-by Jos Dirksen
+
+by Jos Dirksen, 2024.4
+
 https://learning.oreilly.com/library/view/learn-three-js/9781803233871/
 
 https://github.com/PacktPublishing/Learn-Three.js-Fourth-edition
