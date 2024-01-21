@@ -2,6 +2,8 @@
 
 <https://www.youtube.com/watch?v=TsmhYonWyZ4&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=12>
 
+https://minapecheux.com/projects/3d-web-runner-tutorial
+
 1. Create a basic 3D Scene
 <https://www.youtube.com/watch?v=zklHTcaGV44&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=13&pp=iAQB>
 

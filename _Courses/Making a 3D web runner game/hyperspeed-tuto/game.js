@@ -1,6 +1,9 @@
 import * as THREE from "three";
 
 export default class Game {
+  OBSTACLE_PREFAB = new THREE.BoxBufferGeometry(1, 1, 1);
+  OBSTACLE_MATERIAL = new THREE.MeshBasicMaterial({ color: 0xccdece });
+
   constructor(scene, camera) {
     // init variables
 
@@ -29,7 +32,7 @@ export default class Game {
   }
 
   updateGrid() {
-    console.log(this.time);
+    //console.log(this.time);
     this.grid.material.uniforms.time.value = this.time;      
   }
 
@@ -183,7 +186,46 @@ export default class Game {
     this.createShip(scene);
     this.createGrid(scene);
 
+    this.objectsParent = new THREE.Group();
+    scene.add(this.objectsParent);
+
+  for(let i = 0; i < 10; i++){
+    this.spawnObstacle();
+  }
+
     camera.rotateX((-20 * Math.PI) / 180);
     camera.position.set(0, 1.5, 2);
+  }
+
+
+
+  spawnObstacle() {
+    // create geometry
+    const obj = new THREE.Mesh(this.OBSTACLE_PREFAB, this.OBSTACLE_MATERIAL);
+    this.setupObstacles(obj);
+    this.objectsParent.add(obj);
+  }
+  
+  setupObstacles(obj, refXPos = 0, refZPos = 0) {
+    // random scale
+    obj.scale.set(
+      this.randomFloat(0.5, 2),
+      this.randomFloat(0.5, 2),
+      this.randomFloat(0.5, 2)
+    );
+
+    // random position
+    obj.position.set(
+      refXPos + this.randomFloat(-30, 30),
+      obj.scale.y *0.5,
+      refZPos - 100 - this.randomFloat(0, 100)
+    );
+  }
+  spawnBonus(){
+
+  }
+
+  randomFloat(min, max) {
+    return Math.random() * (max - min) + min;
   }
 }
