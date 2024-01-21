@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 //
 import SceneTest from './sceneTest.js'
 
@@ -17,7 +17,7 @@ scene.initialize()
 
 function tick()
 {
-	scene.update()
+	//scene.update()
 	renderer.render(scene, mainCamera)
 	requestAnimationFrame(tick)
 }

@@ -1,12 +1,14 @@
 import * as THREE from "three";
 
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
 
 export default class SceneTest extends THREE.Scene {
   mtlLoader = new MTLLoader();
   objLoader = new OBJLoader();
 
+  targets= []
+  
   constructor(camera) {
     super();
     this.camera = camera;
@@ -42,4 +44,15 @@ export default class SceneTest extends THREE.Scene {
 
     this.add(light);
   }
+
+  async createTarget(mtl)
+	{
+		this.objLoader.setMaterials(mtl)
+
+		const modelRoot = await this.objLoader.loadAsync('assets/targetA.obj')
+
+		modelRoot.rotateY(Math.PI * 0.5)
+
+		return modelRoot
+	}
 }

@@ -1,6 +1,6 @@
-#  Learn Three.js for Games using TypeScript (modern way)
-https://www.youtube.com/watch?v=p4BHphMBlFA
+# Learn Three.js for Games using TypeScript (modern way)
 
+https://www.youtube.com/watch?v=p4BHphMBlFA
 
 Vite + Three.js + TypeScript
 
