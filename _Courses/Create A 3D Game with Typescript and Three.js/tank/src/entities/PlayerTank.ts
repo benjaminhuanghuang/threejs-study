@@ -3,6 +3,7 @@ import GameEntity from "./GameEntity";
 import ResourceManager from "../utils/ResourceManager";
 import GameScene from "../scene/GameScene";
 import Bullet from "./Bullet";
+import ShootEffect from "../effects/ShootEffect";
 
 // helper to track keyboard state
 type KeyboardState = {
@@ -74,14 +75,20 @@ class PlayerTank extends GameEntity {
   private shoot = async () => {
     // create an offset position (shoot a bit ahead of the tank)
     const offset = new Vector3(
-      Math.sin(this._rotation) * 0.3,
-      -Math.cos(this._rotation) * 0.3,
-      0
+      Math.sin(this._rotation) * 0.45,
+      -Math.cos(this._rotation) * 0.45,
+      0.5
     );
     const shootingPosition = this._mesh.position.clone().add(offset);
     // create and load the bullet
     const bullet = new Bullet(shootingPosition, this._rotation);
     await bullet.load();
+
+    // add effect
+    const shootEffect = new ShootEffect(shootingPosition, this._rotation);
+    await shootEffect.load();
+
+    GameScene.instance.addToScene(shootEffect);
     GameScene.instance.addToScene(bullet);
   };
 

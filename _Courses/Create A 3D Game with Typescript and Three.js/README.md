@@ -44,7 +44,9 @@ Add _collider into GameEntities.ts
 ## 6. Add bullets
 
 
-## 7. Add enemies
+## 7. Add explosion and shooing effect
+
+Add utils\MathUtil.ts
 
 
 ## 8. Add collision detection
