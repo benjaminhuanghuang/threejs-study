@@ -2,7 +2,7 @@
 
 https://www.youtube.com/watch?v=tbLPKsuSH9U&list=PLUfCxqsVtJj9dFRKdYftCwy3a19eYKBLQ
 
-https://github.com/aarcoraci/threejs-gamedev-class-2
+https://github.com/aarcoraci?tab=repositories
 
 ## Create project
 
