@@ -7,8 +7,8 @@ export default class SceneTest extends THREE.Scene {
   mtlLoader = new MTLLoader();
   objLoader = new OBJLoader();
 
-  targets= []
-  
+  targets = [];
+
   constructor(camera) {
     super();
     this.camera = camera;
@@ -45,14 +45,13 @@ export default class SceneTest extends THREE.Scene {
     this.add(light);
   }
 
-  async createTarget(mtl)
-	{
-		this.objLoader.setMaterials(mtl)
+  async createTarget(mtl) {
+    this.objLoader.setMaterials(mtl);
 
-		const modelRoot = await this.objLoader.loadAsync('assets/targetA.obj')
+    const modelRoot = await this.objLoader.loadAsync("assets/targetA.obj");
 
-		modelRoot.rotateY(Math.PI * 0.5)
+    modelRoot.rotateY(Math.PI * 0.5);
 
-		return modelRoot
-	}
+    return modelRoot;
+  }
 }
