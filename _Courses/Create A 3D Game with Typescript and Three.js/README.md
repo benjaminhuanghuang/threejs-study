@@ -31,3 +31,11 @@ Update GameEntities.ts
 ```ts
 public update = (_deltaT: number) => {};
 ```
+
+## 5. Add walls
+
+add texture\wall.png
+
+define mapSize in GameScene.ts
+
+Add _collider into GameEntities.ts

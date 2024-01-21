@@ -1,6 +1,7 @@
-import { Mesh, MeshStandardMaterial, Vector3 } from "three";
+import { Box3, Mesh, MeshStandardMaterial, Sphere, Vector3 } from "three";
 import GameEntity from "./GameEntity";
 import ResourceManager from "../utils/ResourceManager";
+import GameScene from "../scene/GameScene";
 
 // helper to track keyboard state
 type KeyboardState = {
@@ -108,6 +109,15 @@ class PlayerTank extends GameEntity {
     // add meshes as child of entity mesh
     this._mesh.add(tankBodyMesh);
     this._mesh.add(tankTurretMesh);
+
+    // create the collider for the tank
+    const collider = new Box3()
+      .setFromObject(this._mesh)
+      .getBoundingSphere(new Sphere(this._mesh.position.clone()));
+    // this creates a sphere around the tank which is easier to calculate with other collisions
+    // reduce the radius a bit
+    collider.radius *= 0.75;
+    this._collider = collider;
   };
 
   public update = (deltaT: number) => {
@@ -140,8 +150,33 @@ class PlayerTank extends GameEntity {
 
     this._rotation = computedRotation;
     this._mesh.setRotationFromAxisAngle(new Vector3(0, 0, 1), computedRotation);
+
+    // before updating the position check if there is a problem with the new one
+    const testingSphere = this._collider?.clone() as Sphere;
+    testingSphere.center.add(computedMovement);
+
+    // search for possible collisions
+    const colliders = GameScene.instance.gameEntities.filter(
+      (e) =>
+        e !== this && e.collider && e.collider!.intersectsSphere(testingSphere)
+    );
+
+    // something is blocking the tank !
+    if (colliders.length) {
+      return;
+    }
+
     // update the current position by adding the movement
     this._mesh.position.add(computedMovement);
+    // update the collider as well
+    (this._collider as Sphere).center.add(computedMovement);
+
+    // make the camera follow the player tank
+    GameScene.instance.camera.position.set(
+      this._mesh.position.x,
+      this._mesh.position.y,
+      GameScene.instance.camera.position.z
+    );
   };
 }
 
