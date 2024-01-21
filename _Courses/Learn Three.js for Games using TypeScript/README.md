@@ -32,14 +32,13 @@ main.ts
 import * as Three from 'three';
 ```
 
-
 ## Run
 
 ```bash
 npm run dev
 ```
 
-
 ## Assets
+
 kenny
 Wavefront .obj format file
