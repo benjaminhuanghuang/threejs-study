@@ -13,6 +13,8 @@ export default class Game {
 
   update() {
     // recompute the game state
+    this.time += this.clock.getDelta();
+
     this.updateGrid();
     this.checkCollisions();
     this.updateInfoPanel();
@@ -26,7 +28,10 @@ export default class Game {
     // handle key up events
   }
 
-  updateGrid() {}
+  updateGrid() {
+    console.log(this.time);
+    this.grid.material.uniforms.time.value = this.time;      
+  }
 
   checkCollisions() {
     // obstacles
@@ -41,8 +46,7 @@ export default class Game {
     // reset game
   }
 
-  initializeScene(scene, camera) {
-    // prepare 3D scene
+  createShip(scene) {
     const shipBody = new THREE.Mesh(
       new THREE.TetrahedronBufferGeometry(0.4),
       new THREE.MeshBasicMaterial({ color: 0xbbccdd })
@@ -54,10 +58,6 @@ export default class Game {
     this.ship.add(shipBody);
 
     scene.add(this.ship);
-
-    camera.position.z = 5;
-    camera.rotateX((-20 * Math.PI) / 180);
-    camera.position.set(0, 1.5, 2);
 
     const reactorSocketGeometry = new THREE.CylinderBufferGeometry(
       0.08,
@@ -121,5 +121,69 @@ export default class Game {
     reactorLight2.position.set(0.15, 0, 0.11);
     reactorLight3.rotateX((90 * Math.PI) / 180);
     reactorLight3.position.set(0, -0.15, 0.11);
+  }
+
+  createGrid(scene) {
+    let division =30;
+    let gridLimit = 200;
+    this.speedZ = 100;
+    this.grid = new THREE.GridHelper(gridLimit * 2, division, 0xccddee, 0xccddee);
+
+    const moveableZ = [];
+    for(let i = 0; i <= division; i++){
+        moveableZ.push(1, 1, 0, 0 );   // move horizontal lines only (1- point is moveable, 0 - not moveable)
+    }
+
+    this.grid.geometry.setAttribute("moveableZ", new THREE.BufferAttribute(new Uint8Array(moveableZ), 1));
+    this.grid.material = new THREE.ShaderMaterial({
+        uniforms: {
+            speedZ: { value: this.speedZ},
+            gridLimit: { value: new THREE.Vector2(gridLimit, gridLimit) },
+            time: { value: 0},
+        },
+        vertexShader:`
+            uniform float time;
+            uniform vec2 gridLimits;
+            uniform float speedZ;
+            
+            attribute float moveableZ;
+            
+            varying vec3 vColor;
+        
+            void main() {
+                vColor = vec3(0, 0, 1.0);// color;
+                float limLen = gridLimits.y - gridLimits.x;
+                vec3 pos = position;
+                if (floor(moveableZ + 0.5) > 0.5){ // if a point has "moveable" attribute = 1 
+                    float zDist = speedZ * time;
+                    float currZPos = mod((pos.z + zDist) - gridLimits.x, limLen) + gridLimits.x;
+                    pos.z = currZPos;
+                } 
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
+            }
+        `,
+        fragmentShader: `
+            varying vec3 vColor;
+        
+            void main() {
+                gl_FragColor = vec4(vColor, 1.);
+            }
+        `,  
+        vertexColors: THREE.VertexColors
+    });
+    scene.add(this.grid);
+
+    this.time = 0;
+    this.clock = new THREE.Clock();
+  }
+
+  initializeScene(scene, camera) {
+    // prepare 3D scene
+
+    this.createShip(scene);
+    this.createGrid(scene);
+
+    camera.rotateX((-20 * Math.PI) / 180);
+    camera.position.set(0, 1.5, 2);
   }
 }

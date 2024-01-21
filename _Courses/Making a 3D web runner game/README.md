@@ -15,6 +15,11 @@ Ship is a group
 
 4. Making an infinite plane with a shader
 <https://www.youtube.com/watch?v=sQZLNuU7jWM&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=10>
+https://medium.com/geekculture/making-a-3d-web-runner-game-4-making-an-infinite-plane-with-a-shader-48a0c63bc8d2
+
+three.js and infinite forward grid movement
+https://stackoverflow.com/questions/51470309/three-js-and-infinite-forward-grid-movement
 
 
-5. 
+5. Spawning obstacles and bonuses
+https://www.youtube.com/watch?v=R3FL6MQtqLM&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=9
