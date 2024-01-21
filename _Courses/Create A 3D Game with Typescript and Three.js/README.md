@@ -15,3 +15,19 @@ https://github.com/aarcoraci?tab=repositories
 
     npm run dev
 ```
+
+## 1. Create a scene
+
+## 2. Load texture and map
+
+## 3. Add tank
+
+## 4. Move tank
+
+Update PlayerTank.ts, handleKeyDown() and handleKeyUp()
+
+Update GameEntities.ts
+
+```ts
+public update = (_deltaT: number) => {};
+```
