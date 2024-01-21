@@ -1,19 +1,19 @@
 import {
-    BoxGeometry,
-    Mesh,
-    MeshBasicMaterial,
+    HemisphereLight,
     PerspectiveCamera,
     Scene,
+    Vector3,
     WebGLRenderer,
   } from "three";
+  import GameEntity from "../entities/GameEntity";
+  import GameMap from "../map/GameMap";
+  import ResourceManager from "../utils/ResourceManager";
   
   class GameScene {
-    // Singleton pattern
     private static _instance = new GameScene();
     public static get instance() {
       return this._instance;
     }
-    
     private _width: number;
     private _height: number;
     private _renderer: WebGLRenderer;
@@ -21,6 +21,9 @@ import {
   
     // three js scene
     private readonly _scene = new Scene();
+  
+    // game entities array
+    private _gameEntities: GameEntity[] = [];
   
     private constructor() {
       this._width = window.innerWidth;
@@ -41,10 +44,14 @@ import {
       // setup camera
       const aspectRatio = this._width / this._height;
       this._camera = new PerspectiveCamera(45, aspectRatio, 0.1, 1000);
-      this._camera.position.set(0, 0, 3);
+      this._camera.position.set(7, 7, 15);
   
       // listen to size change
       window.addEventListener("resize", this.resize, false);
+  
+      // add the game map
+      const gameMap = new GameMap(new Vector3(0, 0, 0), 15);
+      this._gameEntities.push(gameMap);
     }
   
     private resize = () => {
@@ -55,11 +62,19 @@ import {
       this._camera.updateProjectionMatrix();
     };
   
-    public load = () => {
-      const geometry = new BoxGeometry(1, 1, 1);
-      const material = new MeshBasicMaterial({ color: 0x00ff00 });
-      const cube = new Mesh(geometry, material);
-      this._scene.add(cube);
+    public load = async () => {
+      // load game resources
+      await ResourceManager.instance.load();
+  
+      // load game entities
+      for (let index = 0; index < this._gameEntities.length; index++) {
+        const element = this._gameEntities[index];
+        await element.load();
+        this._scene.add(element.mesh);
+      }
+      // add a light to the scene
+      const light = new HemisphereLight(0xffffbb, 0x080820, 1);
+      this._scene.add(light);
     };
   
     public render = () => {
