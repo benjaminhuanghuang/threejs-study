@@ -1,5 +1,5 @@
 import { Texture, TextureLoader } from "three";
-import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 class ResourceManager {
   private static _instance = new ResourceManager();
