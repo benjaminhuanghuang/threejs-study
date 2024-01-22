@@ -1,36 +1,60 @@
-import * as THREE from 'three';
-
+import * as THREE from "three";
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+var camera = new THREE.PerspectiveCamera(
+  60,
+  window.innerWidth / window.innerHeight,
+  1,
+  1000
+);
 camera.position.set(0, 10, 50);
 camera.lookAt(scene.position);
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-var division = 20;
-var limit = 100;
-var grid = new THREE.GridHelper(limit * 2, division, "blue", "blue");
+var clock = new THREE.Clock();
+var time = 0;
+const grid = createGrid(scene);
 
-var moveable = [];
-for (let i = 0; i <= division; i++) {
-  moveable.push(1, 1, 0, 0); // move horizontal lines only (1 - point is moveable)
+function render() {
+  requestAnimationFrame(render);
+
+  time += clock.getDelta();
+  grid.material.uniforms.time.value = time;
+
+  renderer.render(scene, camera);
 }
-grid.geometry.setAttribute('moveable', new THREE.BufferAttribute(new Uint8Array(moveable), 1));
-grid.material = new THREE.ShaderMaterial({
-  uniforms: {
-    time: {
-      value: 0
+render();
+
+
+function createGrid(scene) {
+  const division = 20; // divisions across the grid
+  const gridLimit = 100;   // grid size
+  const grid = new THREE.GridHelper(gridLimit * 2, division, "blue", "blue");
+
+  var moveableZ = [];
+  for (let i = 0; i <= division; i++) {
+    moveableZ.push(1, 1, 0, 0); // move horizontal lines only (1 - point is moveable)
+  }
+
+  grid.geometry.setAttribute(
+    "moveableZ",
+    new THREE.BufferAttribute(new Uint8Array(moveableZ), 1)
+  );
+  grid.material = new THREE.ShaderMaterial({
+    uniforms: {
+      time: {
+        value: 0,
+      },
+      limits: {
+        value: new THREE.Vector2(-gridLimit, gridLimit),
+      },
+      speed: {
+        value: 5,
+      },
     },
-    limits: {
-      value: new THREE.Vector2(-limit, limit)
-    },
-    speed: {
-      value: 5
-    }
-  },
-  vertexShader: `
+    vertexShader: `
     uniform float time;
     uniform vec2 limits;
     uniform float speed;
@@ -51,26 +75,17 @@ grid.material = new THREE.ShaderMaterial({
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
     }
   `,
-  fragmentShader: `
+    fragmentShader: `
     varying vec3 vColor;
   
     void main() {
       gl_FragColor = vec4(vColor, 1.);
     }
   `,
-  vertexColors: THREE.VertexColors
-});
+    vertexColors: true,
+  });
 
-scene.add(grid);
+  scene.add(grid);
 
-var clock = new THREE.Clock();
-var time = 0;
-
-
-function render() {
-  requestAnimationFrame(render);
-  time += clock.getDelta();
-  grid.material.uniforms.time.value = time;
-  renderer.render(scene, camera);
+  return grid;
 }
-render();
