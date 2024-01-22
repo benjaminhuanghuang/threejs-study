@@ -1,11 +1,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Runner</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="importmap">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runner</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
         {
           "imports": {
             "three": "https://unpkg.com/three@v0.128.0/build/three.module.js",
@@ -13,11 +13,15 @@
           }
         }
       </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+
 </head>
 
 <body>
-
-    <script type="module" src="main.js"></script>
+  <!---Dynamic UI-->
+  <div id="stats"></div>
+  <script type="module" src="main.js"></script>
+  <script src="./audio-manager.js"></script>
 </body>
 
 </html>
