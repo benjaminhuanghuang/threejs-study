@@ -145,19 +145,19 @@ export default class Game {
   }
 
   checkCollisions() {
-    // obstacles
     this.objectsParent.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         // pos in world space
         const childZPos = child.position.z + this.objectsParent.position.z;
         // threshold distance
-        const thresholdX = (this.COLLISION_THRESHOLD * child.scale.x) / 2;
-        const thresholdZ = (this.COLLISION_THRESHOLD * child.scale.z) / 2;
+        const thresholdX = this.COLLISION_THRESHOLD + child.scale.x / 2;
+        const thresholdZ = this.COLLISION_THRESHOLD + child.scale.z / 2;
 
         if (
           childZPos > -thresholdZ &&
           Math.abs(child.position.x + this.translateX) < thresholdX
         ) {
+          // Collision
           const params = [
             child,
             -this.translateX,
@@ -189,8 +189,6 @@ export default class Game {
         }
       }
     });
-
-    // bonuses
   }
 
   updateInfoPanel() {
