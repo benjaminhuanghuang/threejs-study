@@ -318,7 +318,7 @@ export default class Game {
       uniforms: {
         translateX: { value: this.translateX },
         speedZ: { value: this.speedZ },
-        gridLimit: { value: new THREE.Vector2(gridLimit, gridLimit) },
+        gridLimits: { value: new THREE.Vector2(-gridLimit, gridLimit) },
         time: { value: 0 },
       },
       vertexShader: `
@@ -333,7 +333,7 @@ export default class Game {
             varying vec3 vColor;
         
             void main() {
-                vColor = vec3(0, 0, 1.0);// color;
+                vColor = color;
                 float limLen = gridLimits.y - gridLimits.x;
                 vec3 pos = position;
                 if (floor(moveableX + 0.5) > 0.5){ // if a point has "moveableX" attribute = 1 

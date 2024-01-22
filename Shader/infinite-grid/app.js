@@ -31,7 +31,7 @@ render();
 function createGrid(scene) {
   const division = 20; // divisions across the grid
   const gridLimit = 100;   // grid size
-  const grid = new THREE.GridHelper(gridLimit * 2, division, "blue", "blue");
+  const grid = new THREE.GridHelper(gridLimit * 2, division, "red", "blue");
 
   var moveableZ = [];
   for (let i = 0; i <= division; i++) {
@@ -82,7 +82,7 @@ function createGrid(scene) {
       gl_FragColor = vec4(vColor, 1.);
     }
   `,
-    vertexColors: true,
+    vertexColors: true //THREE.vertexColors,
   });
 
   scene.add(grid);
