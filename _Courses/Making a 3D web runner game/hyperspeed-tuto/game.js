@@ -8,23 +8,23 @@ export default class Game {
   COLLISION_THRESHOLD = 0.2;
 
   constructor(scene, camera) {
-    // this.divScore = document.getElementById("score");
-    // this.divDistance = document.getElementById("distance");
-    // this.divHealth = document.getElementById("health");
+    this.divScore = document.getElementById("score");
+    this.divDistance = document.getElementById("distance");
+    this.divHealth = document.getElementById("health");
 
-    // this.divGameOver = document.getElementById("game-over");
-    // this.divGameOverScore = document.getElementById("game-over-score");
-    // this.divGameOverDistance = document.getElementById("game-over-distance");
+    this.divGameOver = document.getElementById("game-over");
+    this.divGameOverScore = document.getElementById("game-over-score");
+    this.divGameOverDistance = document.getElementById("game-over-distance");
 
-    // document.getElementById("start-button").addEventListener("click", () => {
-    //   this.running = true;
-    //   document.getElementById("intro-panel").style.display = "none";
-    // });
+    document.getElementById("start-button").addEventListener("click", () => {
+      this.running = true;
+      document.getElementById("intro-panel").style.display = "none";
+    });
 
-    // document.getElementById("replay-button").addEventListener("click", () => {
-    //   this.running = true;
-    //   this.divGameOverPanel.style.display = "none";
-    // });
+    document.getElementById("replay-button").addEventListener("click", () => {
+      this.running = true;
+      this.divGameOverPanel.style.display = "none";
+    });
 
     this.buildUI();
 

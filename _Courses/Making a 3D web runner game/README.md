@@ -32,6 +32,9 @@ three.js and infinite forward grid movement
 <https://www.youtube.com/watch?v=L9fAYWQIfbg&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=7>
 
 8. UI
+https://www.youtube.com/watch?v=qJHAEXIUgjc&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=6
+
+
 
 9. Game over logic
 
