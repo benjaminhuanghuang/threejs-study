@@ -26,8 +26,6 @@ export default class Game {
       this.divGameOverPanel.style.display = "none";
     });
 
-    this.buildUI();
-
     this.scene = scene;
     this.camera = camera;
     this.reset(false);
@@ -36,7 +34,6 @@ export default class Game {
     document.addEventListener("keydown", this.onKeyDown.bind(this));
     document.addEventListener("keyup", this.onKeyUp.bind(this));
   }
-
 
   update() {
     if (!this.running) return;
@@ -150,43 +147,45 @@ export default class Game {
   checkCollisions() {
     // obstacles
     this.objectsParent.traverse((child) => {
-      // pos in world space
-      const childZPos = child.position.z + this.objectsParent.position.z;
-      // threshold distance
-      const thresholdX = (this.COLLISION_THRESHOLD * child.scale.x) / 2;
-      const thresholdZ = (this.COLLISION_THRESHOLD * child.scale.z) / 2;
+      if (child instanceof THREE.Mesh) {
+        // pos in world space
+        const childZPos = child.position.z + this.objectsParent.position.z;
+        // threshold distance
+        const thresholdX = (this.COLLISION_THRESHOLD * child.scale.x) / 2;
+        const thresholdZ = (this.COLLISION_THRESHOLD * child.scale.z) / 2;
 
-      if (
-        childZPos > -thresholdZ &&
-        Math.abs(child.position.x + this.translateX) < thresholdX
-      ) {
-        const params = [
-          child,
-          -this.translateX,
-          -this.objectsParent.position.z,
-        ];
-        if (child.userData.type === "obstacle") {
-          if (soundAudio) {
-            soundAudio.play("crash");
-          }
-          this.health -= 10;
-          this.divHealth.value = this.health;
-          this.setupObstacles(...params);
-          this.shakeCamera();
+        if (
+          childZPos > -thresholdZ &&
+          Math.abs(child.position.x + this.translateX) < thresholdX
+        ) {
+          const params = [
+            child,
+            -this.translateX,
+            -this.objectsParent.position.z,
+          ];
+          if (child.userData.type === "obstacle") {
+            if (soundAudio) {
+              soundAudio.play("crash");
+            }
+            this.health -= 10;
+            this.divHealth.value = this.health;
+            this.setupObstacles(...params);
+            this.shakeCamera();
 
-          if (this.health <= 0) {
-            this.gameOver();
+            if (this.health <= 0) {
+              this.gameOver();
+            }
+          } else {
+            if (soundAudio) {
+              const soundId = Math.floor(
+                (7 * (child.userData.price - 5)) / (20 - 5)
+              );
+              soundAudio.play(`bonus-${soundId}`);
+            }
+            this.score += child.userData.price;
+            this.divScore.innerText = this.score;
+            child.userData.price = this.setupBonus(...params);
           }
-        } else {
-          if (soundAudio) {
-            const soundId = Math.floor(
-              (7 * (child.userData.price - 5)) / (20 - 5)
-            );
-            soundAudio.play(`bonus-${soundId}`);
-          }
-          this.score += child.userData.price;
-          this.divScore.innerText = this.score;
-          child.userData.price = this.setupBonus(...params);
         }
       }
     });
@@ -424,12 +423,13 @@ export default class Game {
       refZPos - 100 - this.randomFloat(0, 100)
     );
   }
+
   spawnBonus() {
     const obj = new THREE.Mesh(
       this.BONUS_PREFAB,
       new THREE.MeshBasicMaterial({ color: 0x000000 })
     );
-    const price = this.setupObstacles(obj);
+    const price = this.setupBonus(obj);
     obj.userData = {
       type: "bonus",
       price,
