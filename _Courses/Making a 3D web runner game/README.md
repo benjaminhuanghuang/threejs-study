@@ -4,6 +4,8 @@
 
 <https://minapecheux.com/projects/3d-web-runner-tutorial>
 
+online demo: https://www.minapecheux.com/games/hyperspeed/
+
 1. Create a basic 3D Scene
 <https://www.youtube.com/watch?v=zklHTcaGV44&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=13&pp=iAQB>
 
@@ -47,7 +49,12 @@ if(this.health <= 0){
 10. Add sounds and music
 <https://www.youtube.com/watch?v=KTxB5GDEefo&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=4>
 
-use howler.js
+use [howler.js](https://howlerjs.com/)
+
+
+Error howler.min.js:2  The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
+
+
 
 11. Improvements
 <https://www.youtube.com/watch?v=xpkv0HWFrmQ&list=PLbEtFK5YvXKU2UhV1_mXlb21LlB7HdPjJ&index=3>

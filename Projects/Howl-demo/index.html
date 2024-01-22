@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Howl Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+
+</head>
+
+<body>
+    <button id="play-button">Play</button>
+    <script>
+        const playButton = document.getElementById("play-button");
+        playButton.addEventListener("click", () => {
+            const sound = new Howl({
+                src: ["music.mp3"],
+                autoplay: true,
+                loop: true,
+            });
+
+            sound.play();
+        });
+
+        // Need click on the page
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     const sound = new Howl({
+        //         src: ["music.mp3"],
+        //         autoplay: true,
+        //         loop: true,
+        //     });
+
+        //     sound.play();
+        // });
+
+        // Need click on the page
+        window.onload = () => {
+            const sound = new Howl({
+                src: ["music.mp3"],
+                autoplay: true,
+                loop: true,
+            });
+
+            sound.play();
+        };
+    </script>
+</body>
+
+</html>

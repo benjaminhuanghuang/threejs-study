@@ -1,9 +1,9 @@
-let soundAudio;
+export let soundAudio;
 
-function setupAudio() {
+export function setupAudio() {
   // background music
   const musicAudio = new Howl({
-    src: ["./assets/music. mp3"],
+    src: ["./assets/music.mp3"],
     autoplay: true,
     Loop: true,
   });
