@@ -1,25 +1,32 @@
 import * as THREE from 'three';
 //
-import SceneTest from './sceneTest.js'
-
-const width = window.innerWidth
-const height = window.innerHeight
+import Game from './game.js'
 
 const renderer = new THREE.WebGLRenderer({
 	canvas: document.getElementById('app')
 })
-renderer.setSize(width, height)
+renderer.setSize(window.innerWidth, window.innerHeight)
+const mainCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+const scene = new THREE.Scene();
 
-const mainCamera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100)
+function resize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+	renderer.setSize(width, height);
+    mainCamera.aspect = width / height;
+    mainCamera.updateProjectionMatrix();
+  }
 
-const scene = new SceneTest(mainCamera)
-scene.initialize()
+window.addEventListener("resize", resize, false);
 
-function tick()
+const game = new Game(scene, mainCamera);
+await game.initialize();
+
+function animate()
 {
-	//scene.update()
-	renderer.render(scene, mainCamera)
-	requestAnimationFrame(tick)
+	renderer.render(scene, mainCamera);
+	requestAnimationFrame(animate);
 }
 
-tick();
+animate();
