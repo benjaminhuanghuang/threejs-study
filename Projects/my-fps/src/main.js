@@ -32,8 +32,13 @@ window.addEventListener("resize", resize, false);
 const game = new Game(scene, mainCamera);
 await game.initialize();
 
+document.addEventListener('keydown', game.handleKeyDown)
+document.addEventListener('keyup', game.handleKeyUp)
+
 function animate()
 {
+  game.update();
+
 	renderer.render(scene, mainCamera);
 	requestAnimationFrame(animate);
 }

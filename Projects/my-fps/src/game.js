@@ -1,10 +1,9 @@
-import * as THREE from "three";
-
 import Target from "./target.js";
 import Gun from "./gun.js";
 
 export default class Game {
   targets = [];
+  keyDown = new Set();
 
   constructor(scene, camera) {
     this.scene = scene;
@@ -40,4 +39,32 @@ export default class Game {
 
     this.gun.addCamera(this.camera);
   }
+
+  handleKeyDown = (event) => {
+		this.keyDown.add(event.key.toLowerCase())
+	}
+
+	handleKeyUp = (event) => {
+		this.keyDown.delete(event.key.toLowerCase())
+	}
+
+  updateInput()
+	{
+		
+    if (this.keyDown.has('arrowleft'))
+    {
+      this.gun.model.rotateY(0.02)
+    }
+    else if (this.keyDown.has('arrowright'))
+    {
+      this.gun.model.rotateY(-0.02)
+    }
+		
+	}
+
+  update()
+	{
+		this.updateInput()
+		//this.updateBullets()
+	}
 }
