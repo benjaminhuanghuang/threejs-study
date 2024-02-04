@@ -6,8 +6,17 @@ const renderer = new THREE.WebGLRenderer({
 	canvas: document.getElementById('app')
 })
 renderer.setSize(window.innerWidth, window.innerHeight)
+
+// Create the main camera
 const mainCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+mainCamera.position.z = 1;
+mainCamera.position.y = 0.5;
+
 const scene = new THREE.Scene();
+
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(0, 4, 2);
+scene.add(light);
 
 function resize() {
     const width = window.innerWidth;
