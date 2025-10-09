@@ -1,0 +1,17 @@
+{
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#1a07a5",
+    "titleBar.border": "#ebe8e8",
+    "titleBar.inactiveBackground": "#7c21d77c",
+    "titleBar.activeForeground": "#ebe8e8",
+    "statusBar.background": "#7C21D7",
+    "statusBar.debuggingBackground": "#7C21D7",
+    "statusBar.noFolderBackground": "#7C21D7",
+    "statussBar.prominentBackground": "#7C21D7",
+    "statusBar.foreground": "#ebe8e8"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",
+  "prisma-smart-formatter.typescriptreact.defaultFormatter": "esbenp.prettier-vscode"
+}
