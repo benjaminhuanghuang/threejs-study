@@ -6,8 +6,8 @@ https://www.bilibili.com/video/BV1mU4y1P7fL/?p=2&spm_id_from=pageDriver&vd_sourc
 
 https://github.com/NikLever/threejs-games-course
 
-
 ## Table of Contents
+
 Introduction
 JavaScript
 ThreeJS Primer
