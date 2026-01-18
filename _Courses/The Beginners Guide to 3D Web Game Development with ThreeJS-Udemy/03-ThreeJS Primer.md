@@ -1,11 +1,10 @@
-import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+# ThreeJS Primer
 
+```js
 class App {
   constructor() {
     const container = document.createElement("div");
     document.body.appendChild(container);
-
     window.addEventListener("resize", this.resize.bind(this));
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -17,5 +16,6 @@ class App {
 
   render() {}
 }
+```
 
-export { App };
+[Three.js Editor]https://threejs.org/editor/
