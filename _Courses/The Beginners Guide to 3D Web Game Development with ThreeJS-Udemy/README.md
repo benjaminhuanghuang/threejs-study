@@ -8,10 +8,10 @@ https://github.com/NikLever/threejs-games-course
 
 ## Table of Contents
 
-Introduction
-JavaScript
-ThreeJS Primer
-Assets
-Your First Game
-Shooters
-Using Physics to Create a Pool Game
+- Introduction
+- JavaScript
+- ThreeJS Primer
+- Assets
+- Your First Game
+- Shooters
+- Using Physics to Create a Pool Game

@@ -1,5 +1,5 @@
-import * as THREE from "../libs/three126/three.module.js";
-import { OrbitControls } from '../libs/three126/OrbitControls.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 class App {
   constructor() {
@@ -8,10 +8,10 @@ class App {
 
     // Perspective camera
     this.camera = new THREE.PerspectiveCamera(
-      60,  // vertical field of view
-      window.innerWidth / window.innerHeight,  // aspect ratio
+      60, // vertical field of view
+      window.innerWidth / window.innerHeight, // aspect ratio
       0.1,
-      100
+      100,
     );
     this.camera.position.set(0, 0, 4);
 
@@ -29,7 +29,7 @@ class App {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.outputEncoding = THREE.sRGBEncoding;
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(this.renderer.domElement);
 
     //Replace Box with Circle, Cone, Cylinder, Dodecahedron, Icosahedron, Octahedron, Plane, Sphere, Tetrahedron, Torus or TorusKnot
