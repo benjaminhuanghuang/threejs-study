@@ -45,6 +45,45 @@ class Game {
     this.load();
 
     window.addEventListener("resize", this.resize.bind(this));
+
+    // User input
+    document.addEventListener("keydown", this.keyDown.bind(this));
+    document.addEventListener("keyup", this.keyUp.bind(this));
+
+    document.addEventListener("touchstart", this.mouseDown.bind(this));
+    document.addEventListener("touchend", this.mouseUp.bind(this));
+    document.addEventListener("mousedown", this.mouseDown.bind(this));
+    document.addEventListener("mouseup", this.mouseUp.bind(this));
+
+    this.spaceKey = false;
+    this.active = false;
+
+    const btn = document.getElementById("playBtn");
+    btn.addEventListener("click", this.startGame.bind(this));
+  }
+
+  startGame() {
+    const gameover = document.getElementById("gameover");
+    const instructions = document.getElementById("instructions");
+    const btn = document.getElementById("playBtn");
+
+    gameover.style.display = "none";
+    instructions.style.display = "none";
+    btn.style.display = "none";
+
+    this.score = 0;
+    this.lives = 3;
+
+    let elm = document.getElementById("score");
+    elm.innerHTML = this.score;
+
+    elm = document.getElementById("lives");
+    elm.innerHTML = this.lives;
+
+    this.plane.reset();
+    this.obstacles.reset();
+
+    this.active = true;
   }
 
   resize() {
@@ -53,6 +92,29 @@ class Game {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
+  mouseDown(evt) {
+    this.spaceKey = true;
+  }
+
+  mouseUp(evt) {
+    this.spaceKey = false;
+  }
+
+  keyDown(evt) {
+    switch (evt.keyCode) {
+      case 32:
+        this.spaceKey = true;
+        break;
+    }
+  }
+
+  keyUp(evt) {
+    switch (evt.keyCode) {
+      case 32:
+        this.spaceKey = false;
+        break;
+    }
+  }
   setEnvironment() {
     const loader = new RGBELoader().setPath(this.assetsPath);
     const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
