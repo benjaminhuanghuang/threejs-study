@@ -24,68 +24,123 @@
       import * as THREE from "three";
       import { OrbitControls } from "three/addons/controls/OrbitControls.js";
       import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+      import { LoadingBar } from "./libs/LoadingBar.js";
 
-      // Scene
-      const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x111111);
+      class App {
+        constructor() {
+          const container = document.createElement("div");
+          document.body.appendChild(container);
 
-      // Camera
-      const camera = new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        100,
-      );
-      camera.position.set(2, 2, 4);
+          this.camera = new THREE.PerspectiveCamera(
+            60,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            100,
+          );
+          this.camera.position.set(0, 0, 5);
 
-      // Renderer
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      document.body.appendChild(renderer.domElement);
+          this.scene = new THREE.Scene();
+          this.scene.background = new THREE.Color(0xaaaaaa);
 
-      // Controls
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
+          const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 0.5);
+          this.scene.add(ambient);
 
-      // Lights
-      scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+          const light = new THREE.DirectionalLight(0xffffff, 1.5);
+          light.position.set(0.2, 1, 1);
+          this.scene.add(light);
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-      dirLight.position.set(5, 5, 5);
-      scene.add(dirLight);
+          this.renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+          });
+          this.renderer.setPixelRatio(window.devicePixelRatio);
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          this.renderer.outputEncoding = THREE.sRGBEncoding;
+          this.renderer.physicallyCorrectLights = true;
+          container.appendChild(this.renderer.domElement);
+          this.setEnvironment();
 
-      // GLTF Loader
-      const loader = new GLTFLoader();
+          this.loadingBar = new LoadingBar();
 
-      loader.load(
-        "./model.glb", // path to your .glb or .gltf
-        (gltf) => {
-          const model = gltf.scene;
-          scene.add(model);
-        },
-        (xhr) => {
-          console.log(((xhr.loaded / xhr.total) * 100).toFixed(0) + "% loaded");
-        },
-        (error) => {
-          console.error("An error happened", error);
-        },
-      );
+          this.loadGLTF();
 
-      // Animation loop
-      function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
+          this.controls = new OrbitControls(
+            this.camera,
+            this.renderer.domElement,
+          );
+
+          window.addEventListener("resize", this.resize.bind(this));
+        }
+
+        setEnvironment() {
+          const loader = new RGBELoader();
+          const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
+          pmremGenerator.compileEquirectangularShader();
+
+          const self = this;
+
+          loader.load(
+            "../../assets/hdr/venice_sunset_1k.hdr",
+            (texture) => {
+              const envMap =
+                pmremGenerator.fromEquirectangular(texture).texture;
+              pmremGenerator.dispose();
+
+              self.scene.environment = envMap;
+            },
+            undefined,
+            (err) => {
+              console.error("An error occurred setting the environment");
+            },
+          );
+        }
+
+        loadGLTF() {
+          const loader = new GLTFLoader().setPath("./assets/plane/");
+
+          // Load a glTF resource
+          loader.load(
+            // resource URL
+            "microplane.glb",
+            // called when the resource is loaded
+            (gltf) => {
+              const bbox = new THREE.Box3().setFromObject(gltf.scene);
+              console.log(
+                `min:${bbox.min.x.toFixed(2)},${bbox.min.y.toFixed(2)},${bbox.min.z.toFixed(2)} -  max:${bbox.max.x.toFixed(2)},${bbox.max.y.toFixed(2)},${bbox.max.z.toFixed(2)}`,
+              );
+
+              this.plane = gltf.scene;
+
+              this.scene.add(gltf.scene);
+
+              this.loadingBar.visible = false;
+
+              this.renderer.setAnimationLoop(this.render.bind(this));
+            },
+            // called while loading is progressing
+            (xhr) => {
+              this.loadingBar.progress = xhr.loaded / xhr.total;
+            },
+            // called when loading has errors
+            (err) => {
+              console.error(err);
+            },
+          );
+        }
+
+        resize() {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        render() {
+          this.plane.rotateY(0.01);
+          this.renderer.render(this.scene, this.camera);
+        }
       }
-      animate();
-
-      // Resize
-      window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+      const app = new App();
     </script>
   </body>
 </html>
