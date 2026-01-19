@@ -1,0 +1,138 @@
+<style>
+  body {
+    margin: 0;
+    background: #0c4a6e;
+  }
+</style>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.150.1/examples/jsm/"
+    }
+  }
+</script>
+
+<script type="module">
+  /*
+    To enable shadows in Three.js, you need to set the following properties:
+    RENDERER.shadowMap.enabled = true
+    LIGHT.castShadow = true
+    MESH.receiveShadow = true
+    MESH.castShadow = true
+  */
+  import * as THREE from "three";
+  import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000,
+  );
+  // Create renderer
+  const renderer = new THREE.WebGLRenderer();
+  renderer.shadowMap.enabled = true; // Enable shadow maps
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+
+  // Create a cube that casts shadow
+  class Box extends THREE.Mesh {
+    constructor({
+      width = 1,
+      height = 1,
+      depth = 1,
+      color = "#00ff00",
+      velocity = {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      position = {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+    }) {
+      super(
+        new THREE.BoxGeometry(width, height, depth),
+        new THREE.MeshStandardMaterial({ color }),
+      );
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+
+      this.position.set(position.x, position.y, position.z);
+      this.bottom = this.position.y - height / 2;
+      this.top = this.position.y + height / 2;
+      this.velocity = velocity;
+      this.gravity = -0.002;
+    }
+    update() {
+      this.bottom = this.position.y - this.height / 2;
+      this.top = this.position.y + this.height / 2;
+
+      this.applyGravity(ground);
+    }
+
+    applyGravity(ground) {
+      // Gravity effect
+      // Every frame, gravity increases downward speed.
+      // the bounce gives it an upward velocity, but gravity pulls it back down on the very next frame.
+      this.velocity.y += this.gravity;
+      // this is where we hit the gro und
+      if (this.bottom + this.velocity.y <= ground.top) {
+        this.velocity.y *= 0.8;
+        this.velocity.y = -this.velocity.y;
+      } else {
+        this.position.y += this.velocity.y;
+      }
+    }
+  }
+  const cube = new Box({
+    width: 1,
+    height: 1,
+    depth: 1,
+    velocity: { x: 0, y: -0.01, z: 0 },
+    zAcceleration: true,
+  });
+  cube.castShadow = true; // Enable shadow casting for the cube
+  scene.add(cube);
+
+  // Create a ground that receives shadow
+  const ground = new Box({
+    width: 5,
+    height: 0.5,
+    depth: 10,
+    color: "#0000ff",
+    position: {
+      x: 0,
+      y: -2,
+      z: 0,
+    },
+  });
+  ground.receiveShadow = true; // Enable shadow receiving for the ground
+  scene.add(ground);
+
+  // Light to cast shadow
+  const light = new THREE.DirectionalLight(0xffffff, 1);
+  light.position.y = 3;
+  light.position.z = 2;
+  light.castShadow = true; // Enable shadow casting for the light
+  scene.add(light);
+
+  camera.position.z = 10;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+
+    // cube.rotation.x += 0.01;
+    // cube.rotation.y += 0.01;
+    cube.update(ground);
+  }
+  animate();
+</script>
