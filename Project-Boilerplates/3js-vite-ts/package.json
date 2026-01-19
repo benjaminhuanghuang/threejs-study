@@ -1,7 +1,7 @@
 {
   "name": "3js-vite-ts",
   "version": "1.0.0",
-  "description": "```sh npm init -y",
+  "description": "Three.js project using Vite and TypeScript",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -11,12 +11,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
-    "three": "^0.180.0"
+    "three": "^0.182.0"
   },
   "devDependencies": {
-    "@types/three": "^0.180.0",
+    "@types/three": "^0.182.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vite": "^7.1.9"
