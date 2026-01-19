@@ -1,5 +1,7 @@
 # Plane Game
 
+## Loading assets
+
 ## User input
 
 ## Obstacles
