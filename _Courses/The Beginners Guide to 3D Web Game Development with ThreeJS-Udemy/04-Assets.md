@@ -2,4 +2,6 @@
 
 sketchfab.com
 
-Mixamo.com
+Mixamo.com: setup character animation
+
+Blender
