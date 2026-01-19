@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { LoadingBar } from "../libs/LoadingBar.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { Plane } from "./Plane.js";
+import { Obstacles } from "./Obstacles.js";
 
 class Game {
   constructor() {
@@ -141,6 +142,7 @@ class Game {
 
     this.loadSkybox();
     this.plane = new Plane(this);
+    this.obstacles = new Obstacles(this);
   }
 
   loadSkybox() {
@@ -152,6 +154,33 @@ class Game {
           this.renderer.setAnimationLoop(this.render.bind(this));
         },
       );
+  }
+  gameOver() {
+    this.active = false;
+
+    const gameover = document.getElementById("gameover");
+    const btn = document.getElementById("playBtn");
+
+    gameover.style.display = "block";
+    btn.style.display = "block";
+  }
+
+  incScore() {
+    this.score++;
+
+    const elm = document.getElementById("score");
+
+    elm.innerHTML = this.score;
+  }
+
+  decLives() {
+    this.lives--;
+
+    const elm = document.getElementById("lives");
+
+    elm.innerHTML = this.lives;
+
+    if (this.lives == 0) this.gameOver();
   }
 
   updateCamera() {
@@ -175,6 +204,11 @@ class Game {
     const time = this.clock.getElapsedTime();
 
     this.plane.update(time);
+
+    if (this.active) {
+      this.obstacles.update(this.plane.position);
+    }
+
     this.updateCamera();
 
     this.renderer.render(this.scene, this.camera);
