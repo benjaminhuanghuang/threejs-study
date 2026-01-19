@@ -4,6 +4,8 @@ https://www.youtube.com/watch?v=sPereCgQnWQ
 
 https://chriscourses.com/
 
+⭐️⭐️⭐️⭐️⭐️
+
 ## The Essentials
 
 - Project setup
