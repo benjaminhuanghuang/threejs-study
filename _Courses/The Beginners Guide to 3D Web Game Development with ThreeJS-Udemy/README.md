@@ -2,9 +2,9 @@
 
 https://www.udemy.com/course/beginners-3d-web-game-development-with-threejs/
 
-https://www.bilibili.com/video/BV1mU4y1P7fL/?p=2&spm_id_from=pageDriver&vd_source=b7025abbc1efd8b7631e43fa506ade3a
+[Code](https://github.com/NikLever/threejs-games-course)
 
-https://github.com/NikLever/threejs-games-course
+https://www.bilibili.com/video/BV1mU4y1P7fL/
 
 ## Table of Contents
 
