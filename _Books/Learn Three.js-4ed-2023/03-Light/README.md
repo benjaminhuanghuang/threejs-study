@@ -1,3 +1,4 @@
+# Ch 3: Working With Light Sources In Three.Js
 
 THREE.PointLight emits light from a specific point in all directions
 

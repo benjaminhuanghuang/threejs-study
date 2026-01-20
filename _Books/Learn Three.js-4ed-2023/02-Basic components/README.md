@@ -1,3 +1,5 @@
+# Ch 2: The Basic Components That Make Up A Three.Js Application
+
 - Camera: This determines which part of THREE.Scene is rendered onscreen.
 
 - Lights: These have an effect on how materials are shown and are used when creating shadow effects (discussed in detail in Chapter 3, Working with Light Sources in Three.js).
