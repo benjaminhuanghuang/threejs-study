@@ -8,6 +8,7 @@ class App {
   #clock_ = null;
 
   #sun_ = null;
+  #earth_ = null;
 
   constructor() {}
 
@@ -50,17 +51,22 @@ class App {
 
     this.#CreateSolarSystem_();
   }
-
   #CreateSolarSystem_() {
+    const moonGeo = new THREE.SphereGeometry(2, 32, 32);
+    const moonMat = new THREE.MeshBasicMaterial({ color: 0x888888 });
+    const moon = new THREE.Mesh(moonGeo, moonMat);
+    moon.position.set(8, 0, 0);
+
     const earthGeo = new THREE.SphereGeometry(5, 32, 32);
     const earthMat = new THREE.MeshBasicMaterial({ color: 0x0000ff });
-    const earth = new THREE.Mesh(earthGeo, earthMat);
-    earth.position.set(60, 0, 0);
-
+    this.#earth_ = new THREE.Mesh(earthGeo, earthMat);
+    this.#earth_.position.set(60, 0, 0);
+    this.#earth_.add(moon);
     const sunGeo = new THREE.SphereGeometry(40, 32, 32);
     const sunMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 
     this.#sun_ = new THREE.Mesh(sunGeo, sunMat);
+    this.#sun_.add(this.#earth_);
 
     this.#scene_.add(this.#sun_);
   }
@@ -76,7 +82,6 @@ class App {
     canvas.style.height = window.innerHeight + "px";
 
     this.#threejs_.setSize(width * dpr, height * dpr, false);
-    // this.#threejs.setPixelRatio(dpr);
 
     this.#camera_.aspect = aspect;
     this.#camera_.updateProjectionMatrix();
@@ -97,6 +102,7 @@ class App {
   #step_(timeElapsed) {
     // State update
     this.#sun_.rotateY(timeElapsed);
+    this.#earth_.rotateY(timeElapsed * 2);
   }
 }
 
