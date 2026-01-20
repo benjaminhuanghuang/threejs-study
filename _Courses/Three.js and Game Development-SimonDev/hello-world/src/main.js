@@ -10,9 +10,13 @@ class App {
   #mesh = null;
 
   constructor() {
-    window.addEventListener("resize", () => {
-      this.#onWindowResize();
-    });
+    window.addEventListener(
+      "resize",
+      () => {
+        this.#onWindowResize();
+      },
+      false,
+    );
   }
 
   Initialize() {
