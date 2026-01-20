@@ -9,6 +9,8 @@ class App {
 
   #sun_ = null;
   #earth_ = null;
+  #earthOrbit_ = null;
+  #moonOrbit_ = null;
 
   constructor() {}
 
@@ -26,6 +28,7 @@ class App {
     this.#onWindowResize_();
     this.#raf_();
   }
+
   async #setupProject_() {
     this.#threejs_ = new THREE.WebGLRenderer();
     this.#threejs_.setSize(window.innerWidth, window.innerHeight);
@@ -49,9 +52,15 @@ class App {
     this.#scene_ = new THREE.Scene();
     this.#scene_.background = new THREE.Color(0x000000);
 
-    this.#CreateSolarSystem_();
+    this.#CreateSolarSystem2_();
   }
-  #CreateSolarSystem_() {
+
+  /*
+    Using
+    this.#sun_.rotateY(timeElapsed);
+    this.#earth_.rotateY(timeElapsed * 2);
+  */
+  #CreateSolarSystem1_() {
     const moonGeo = new THREE.SphereGeometry(2, 32, 32);
     const moonMat = new THREE.MeshBasicMaterial({ color: 0x888888 });
     const moon = new THREE.Mesh(moonGeo, moonMat);
@@ -67,6 +76,33 @@ class App {
 
     this.#sun_ = new THREE.Mesh(sunGeo, sunMat);
     this.#sun_.add(this.#earth_);
+
+    this.#scene_.add(this.#sun_);
+  }
+
+  #CreateSolarSystem2_() {
+    const moonGeo = new THREE.SphereGeometry(1, 32, 32);
+    const moonMat = new THREE.MeshBasicMaterial({ color: 0x888888 });
+    const moon = new THREE.Mesh(moonGeo, moonMat);
+    moon.position.set(8, 0, 0);
+
+    this.#moonOrbit_ = new THREE.Group();
+    this.#moonOrbit_.add(moon);
+    this.#moonOrbit_.rotateY(0.5);
+
+    const earthGeo = new THREE.SphereGeometry(5, 32, 32);
+    const earthMat = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    this.#earth_ = new THREE.Mesh(earthGeo, earthMat);
+    this.#earth_.position.set(60, 0, 0);
+    this.#earth_.add(this.#moonOrbit_);
+
+    this.#earthOrbit_ = new THREE.Group();
+    this.#earthOrbit_.add(this.#earth_);
+
+    const sunGeo = new THREE.SphereGeometry(40, 32, 32);
+    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    this.#sun_ = new THREE.Mesh(sunGeo, sunMat);
+    this.#sun_.add(this.#earthOrbit_);
 
     this.#scene_.add(this.#sun_);
   }
@@ -101,8 +137,12 @@ class App {
 
   #step_(timeElapsed) {
     // State update
-    this.#sun_.rotateY(timeElapsed);
-    this.#earth_.rotateY(timeElapsed * 2);
+    // -- For #CreateSolarSystem1_
+    // this.#sun_.rotateY(timeElapsed);
+    // this.#earth_.rotateY(timeElapsed * 2);
+
+    this.#earthOrbit_.rotateY(timeElapsed);
+    this.#moonOrbit_.rotateY(timeElapsed * 2);
   }
 }
 
