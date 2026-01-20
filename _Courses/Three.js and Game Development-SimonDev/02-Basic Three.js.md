@@ -44,3 +44,12 @@ function main() {
   }
 }
 ```
+
+## HD-DPI
+
+DPR = device pixel ratio
+
+```js
+const dpr = window.devicePixelRatio;
+this.#threejs.setPixelRatio(drp);
+```

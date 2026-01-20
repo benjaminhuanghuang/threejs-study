@@ -61,14 +61,20 @@ class App {
   }
 
   #onWindowResize() {
-    this.#threejs.setSize(window.innerWidth, window.innerHeight, false);
-
-    this.#camera.aspect = window.innerWidth / window.innerHeight;
-    this.#camera.updateProjectionMatrix();
-
     const canvas = this.#threejs.domElement;
+    const dpr = window.devicePixelRatio;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const aspect = width / height;
+
     canvas.style.width = window.innerWidth + "px";
     canvas.style.height = window.innerHeight + "px";
+
+    this.#threejs.setSize(width * dpr, height * dpr, false);
+    // this.#threejs.setPixelRatio(dpr);
+
+    this.#camera.aspect = aspect;
+    this.#camera.updateProjectionMatrix();
   }
 }
 
