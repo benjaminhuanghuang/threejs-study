@@ -6,11 +6,11 @@ https://github.com/aarcoraci?tab=repositories
 
 ## Create project
 
-```bash
+```sh
     npm create vite@latest
-    
+
     cd <project-name>
-    npm i three 
+    npm i three
     npm i -D @types/three
 
     npm run dev
@@ -38,8 +38,7 @@ add texture\wall.png
 
 define mapSize in GameScene.ts
 
-Add _collider into GameEntities.ts
-
+Add \_collider into GameEntities.ts
 
 ## 6. Add bullets
 
