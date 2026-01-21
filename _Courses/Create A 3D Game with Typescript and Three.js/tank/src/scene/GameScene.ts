@@ -49,8 +49,8 @@ class GameScene {
     this._height = window.innerHeight;
 
     this._renderer = new WebGLRenderer({
-      alpha: true,
-      antialias: true,
+      alpha: true, // Makes the renderer’s background transparent.
+      antialias: true, // Enables smoother edges (anti-aliasing) for rendered 3D objects.
     });
     this._renderer.setPixelRatio(window.devicePixelRatio);
     this._renderer.setSize(this._width, this._height);
@@ -147,7 +147,7 @@ class GameScene {
   // method to remove entities no longer needed
   private disposeEntities = () => {
     const entitiesToBeDisposed = this._gameEntities.filter(
-      (e) => e.shouldDispose
+      (e) => e.shouldDispose,
     );
     entitiesToBeDisposed.forEach((element) => {
       this._scene.remove(element.mesh);

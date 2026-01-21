@@ -8,8 +8,9 @@ https://github.com/aarcoraci?tab=repositories
 
 ```sh
     npm create vite@latest
+        vanilla
+        typescript
 
-    cd <project-name>
     npm i three
     npm i -D @types/three
 
@@ -17,6 +18,21 @@ https://github.com/aarcoraci?tab=repositories
 ```
 
 ## 1. Create a scene
+
+GameScene.ts using singleton
+
+```js
+class GameScene {
+  private static _instance = new GameScene();
+  public static get instance() {
+    return this._instance;
+  }
+
+  private constructor() {}
+}
+
+export default GameScene;
+```
 
 ## 2. Load texture and map
 
