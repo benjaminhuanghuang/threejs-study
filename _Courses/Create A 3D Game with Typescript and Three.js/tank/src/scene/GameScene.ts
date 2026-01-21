@@ -60,6 +60,7 @@ class GameScene {
       throw "unable to find target element";
     }
     targetElement.appendChild(this._renderer.domElement);
+
     // setup camera
     const aspectRatio = this._width / this._height;
     this._camera = new PerspectiveCamera(45, aspectRatio, 0.1, 1000);
@@ -126,15 +127,17 @@ class GameScene {
 
   public render = () => {
     requestAnimationFrame(this.render);
+
     // remove entities no longer needed
     this.disposeEntities();
-    // obtain elapsed time between frams
+    // obtain elapsed time between frames
     const deltaT = this._clock.getDelta();
     // update the tate of all entities
     for (let index = 0; index < this._gameEntities.length; index++) {
       const element = this._gameEntities[index];
-      element.update(deltaT); /// ????
+      element.update(deltaT);
     }
+
     this._renderer.render(this._scene, this._camera);
   };
 
