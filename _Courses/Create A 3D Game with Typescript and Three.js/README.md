@@ -36,6 +36,8 @@ export default GameScene;
 
 ## 2. Load texture and map
 
+ResourceManager.ts
+
 ## 3. Add tank
 
 ## 4. Move tank
