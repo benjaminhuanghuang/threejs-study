@@ -17,6 +17,7 @@ import {
   SSAOPlugin,
   BloomPlugin,
   GammaCorrectionPlugin,
+  mobileAndTabletCheck,
 } from "webgi";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -31,6 +32,7 @@ const WebgiViewer = forwardRef((props, ref) => {
   const [cameraRef, setCameraRef] = useState(null);
   const [positionRef, setPositionRef] = useState(null);
   const [previewMode, setPreviewMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const canvasContainerRef = useRef(null);
 
@@ -63,9 +65,12 @@ const WebgiViewer = forwardRef((props, ref) => {
     },
   }));
 
-  const memoizedScrollAnimation = useCallback((position, target, onUpdate) => {
-    scrollAnimation(position, target, onUpdate);
-  }, []);
+  const memoizedScrollAnimation = useCallback(
+    (position, target, isMobileOrTablet, onUpdate) => {
+      scrollAnimation(position, target, isMobileOrTablet, onUpdate);
+    },
+    [],
+  );
 
   const setupViewer = useCallback(async () => {
     // Initialize the viewer
@@ -74,6 +79,10 @@ const WebgiViewer = forwardRef((props, ref) => {
     });
 
     setViewerRef(viewer);
+
+    const isMobileOrTablet = mobileAndTabletCheck();
+    setIsMobile(isMobileOrTablet);
+
     setCameraRef(viewer.scene.activeCamera);
     setPositionRef(viewer.scene.activeCamera.position);
     setTargetRef(viewer.scene.activeCamera.target);
@@ -103,6 +112,13 @@ const WebgiViewer = forwardRef((props, ref) => {
     viewer.getPlugin(TonemapPlugin).config.clipBackground = true;
 
     viewer.scene.activeCamera.setCameraOptions({ controlsEnabled: false });
+
+    if (isMobileOrTablet) {
+      position.set(-16.7, 1.17, 11.7);
+      target.set(0, 1.37, 0);
+      props.contentRef.current.className = "mobile-or-tablet";
+    }
+
     window.scrollTo(0, 0);
 
     let needsUpdate = true;
@@ -119,7 +135,7 @@ const WebgiViewer = forwardRef((props, ref) => {
       }
     });
 
-    memoizedScrollAnimation(position, target, onUpdate);
+    memoizedScrollAnimation(position, target, isMobileOrTablet, onUpdate);
   }, []);
 
   const handleExist = useCallback(() => {
