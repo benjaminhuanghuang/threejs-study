@@ -130,7 +130,7 @@ const WebgiViewer = forwardRef((props, ref) => {
 
     viewer.addEventListener("preFrame", () => {
       if (needsUpdate) {
-        camera.positionTargetUpdate(true);
+        camera.positionTargetUpdated(true);
         needsUpdate = false;
       }
     });
