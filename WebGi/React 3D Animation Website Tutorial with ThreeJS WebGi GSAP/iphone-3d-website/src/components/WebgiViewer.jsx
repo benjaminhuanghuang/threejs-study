@@ -1,33 +1,60 @@
-import React, {
+import {
   useRef,
   useEffect,
-  useState,
   useCallback,
+  useState,
   forwardRef,
   useImperativeHandle,
-  use,
 } from "react";
 import {
   ViewerApp,
   AssetManagerPlugin,
   GBufferPlugin,
   ProgressivePlugin,
-  CanvasSnipperPlugin,
   TonemapPlugin,
   SSRPlugin,
   SSAOPlugin,
   BloomPlugin,
   GammaCorrectionPlugin,
-  addBasePlugins,
-  mobileAndTabletCheck,
-  AssetManagerBasicPopupPlugin,
-  TweakpaneUiPlugin,
 } from "webgi";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { scrollAnimation } from "../lib/scroll-animation";
 
-function WebgiViewer() {
+gsap.registerPlugin(ScrollTrigger);
+
+const WebgiViewer = forwardRef((props, ref) => {
   const canvasRef = useRef(null);
+  const [viewerRef, setViewerRef] = useState(null);
+  const [targetRef, setTargetRef] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [positionRef, setPositionRef] = useState(null);
+
+  useImperativeHandle(ref, () => ({
+    triggerPreview() {
+      gsap.to(positionRef, {
+        x: 13.04,
+        y: -2.01,
+        z: 2.29,
+        duration: 2,
+        onUpdate: () => {
+          viewerRef.setDirty();
+          cameraRef.positionTargetUpdated(true);
+        },
+      });
+
+      gsap.to(targetRef, {
+        x: 0.11,
+        y: 0.0,
+        z: 0.0,
+        duration: 2,
+      });
+    },
+  }));
+
+  const memoizedScrollAnimation = useCallback((position, target, onUpdate) => {
+    scrollAnimation(position, target, onUpdate);
+  }, []);
 
   const setupViewer = useCallback(async () => {
     // Initialize the viewer
@@ -35,25 +62,48 @@ function WebgiViewer() {
       canvas: canvasRef.current,
     });
 
+    const camera = viewer.scene.activeCamera;
+    const position = camera.position;
+    const target = camera.target;
+
     const manager = await viewer.addPlugin(AssetManagerPlugin);
 
     // Add plugins individually.
     await viewer.addPlugin(GBufferPlugin);
     await viewer.addPlugin(new ProgressivePlugin(32));
-    await viewer.addPlugin(new TonemapPlugin(!viewer.useRgbm));
+    await viewer.addPlugin(new TonemapPlugin(true));
     await viewer.addPlugin(GammaCorrectionPlugin);
     await viewer.addPlugin(SSRPlugin);
     await viewer.addPlugin(SSAOPlugin);
     await viewer.addPlugin(BloomPlugin);
 
+    //await addBasePlugins(viewer);
+    //await viewer.addPlugin(CanvasSnipperPlugin);
+
+    // This must be called after all plugins are added.
     viewer.renderer.refreshPipeline();
+
     await manager.addFromPath("scene-black.glb");
     viewer.getPlugin(TonemapPlugin).config.clipBackground = true;
 
     viewer.scene.activeCamera.setCameraOptions({ controlsEnabled: false });
     window.scrollTo(0, 0);
 
-    
+    let needsUpdate = true;
+
+    const onUpdate = () => {
+      needsUpdate = true;
+      viewer.setDirty();
+    };
+
+    viewer.addEventListener("preFrame", () => {
+      if (needsUpdate) {
+        camera.positionTargetUpdate(true);
+        needsUpdate = false;
+      }
+    });
+
+    memoizedScrollAnimation(position, target, onUpdate);
   }, []);
 
   useEffect(() => {
@@ -65,6 +115,6 @@ function WebgiViewer() {
       <canvas ref={canvasRef} className="webgi-canvas" />
     </div>
   );
-}
+});
 
 export default WebgiViewer;
