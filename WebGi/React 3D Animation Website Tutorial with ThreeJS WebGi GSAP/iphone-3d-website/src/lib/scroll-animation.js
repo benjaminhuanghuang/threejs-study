@@ -38,5 +38,15 @@ export const scrollAnimation = (position, target, onUpdate) => {
         scrub: 2,
         immediateRender: false,
       },
+    })
+    .to(".sound-section-content", {
+      opacity: 1,
+      scrollTrigger: {
+        trigger: ".sound-section",
+        start: "top bottom",
+        end: "top top",
+        scrub: 2,
+        immediateRender: false,
+      },
     });
 };
